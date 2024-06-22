@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchEditItem, fetchGetItemById, getRoleBasedOnToken } from '../services/api';
+import { fetchEditItem, getRoleBasedOnToken } from '../services/api';
 
 const Edit = () => {
     const navigate = useNavigate();

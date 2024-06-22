@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Item from '../components/Item';
 import { useNavigate } from 'react-router-dom';
 import { fetchItems, getRoleBasedOnToken } from '../services/api';
+import { deleteProduct } from '../services/api';
 
 const Dashboard = () => {
   const [items, setItems] = useState([]);
@@ -34,6 +35,12 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
+  const handleDelete = async (id) => {
+    await deleteProduct(id);
+    console.log('Item deleted');
+    navigate('/dashboard')
+}
+
   return (
     <>
       <div>
@@ -45,9 +52,12 @@ const Dashboard = () => {
       )}
       <div>
         {items.map((item) => (
-          <Item key={item.ansi} 
+          <>
+          <Item key={item.asin} 
           data={item} >
           </Item> 
+          <button onClick={() => handleDelete(item.asin)}>Delete Item</button>
+          </>
         ))}
       </div>
     </>
