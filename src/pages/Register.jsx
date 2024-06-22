@@ -1,51 +1,45 @@
-import React, {useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { fetchRegister } from '../services/api';
-
 
 const Register = () => {
     const navigate = useNavigate();
-    const [data, setdata] = useState({
-        email: '',
+    const [data, setData] = useState({
+        username: '',
         password: '',
-        name: '',
-        birthdate: ''
+        role: '',
     });
 
     const handleChange = (e) => {
-        setdata({
+        setData({
             ...data,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
         });
-    }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const res = await fetchRegister(data);
-            if(res.status === 200){
-                navigate('/dashboard');
-            }
+            console.log(res);
+            navigate('/dashboard');
         } catch (error) {
-            console.log(error);
+            console.error('Error during registration:', error);
         }
-    }
+    };
 
+    return (
+        <form onSubmit={handleSubmit}>
+            <label htmlFor="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Username" onChange={handleChange} required />
+            <label htmlFor="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Password" onChange={handleChange} required />
+            <label htmlFor="role">Role</label>
+            <input type="text" id="role" name="role" placeholder="Role" onChange={handleChange} required />
+            <button type="submit">Register</button>
+            <button type="button" onClick={() => navigate('/auth/login')}>Go to Login</button>
+        </form>
+    );
+};
 
-  return (
-    <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="Email" onChange={handleChange} required/>
-        <label htmlFor="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Password" onChange={handleChange} required/>
-        <label htmlFor="name">Name</label>
-        <input type="text" id="name" name="name" placeholder="Name" onChange={handleChange} required/>
-        <label htmlFor="birthdate">Birthdate</label>
-        <input type="date" id="birthdate" name="birthdate" onChange={handleChange} required/>
-        <button type="submit">Register</button>
-    </form>
-    
-  )
-}
-
-export default Register
+export default Register;
