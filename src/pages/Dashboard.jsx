@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Item from '../components/Item';
 import { useNavigate } from 'react-router-dom';
-import { fetchItems } from '../services/api';
+import { fetchItems, getRoleBasedOnToken } from '../services/api';
 
 const Dashboard = () => {
   const [items, setItems] = useState([]);
   const [render, setRender] = useState(false);
+  const [role, setRole] = useState('');
   const navigate = useNavigate();
 
   const handleDelete = (id) => {
@@ -28,8 +29,11 @@ const Dashboard = () => {
         const response = await fetchItems(10, null);
         setItems(response.data.items);
         console.log(response);
+
+        const userRole = getRoleBasedOnToken();
+        setRole(userRole);
       } catch (error) {
-        console.log(error);
+        console.log(error.message);
       }
     };
 
@@ -41,7 +45,9 @@ const Dashboard = () => {
       <div>
         <button onClick={handleLogout}>Logout</button>
       </div>
-      <button onClick={() => navigate('/create')}>Create Item</button>
+      {role === 'admin' && (
+        <button onClick={() => navigate('/create')}>Create Item</button>
+      )}
       <div>
         {items.map((item) => (
           <Item 

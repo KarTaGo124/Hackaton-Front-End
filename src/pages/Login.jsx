@@ -20,6 +20,7 @@ const Login = () => {
         e.preventDefault();
         try {
             const res = await fetchLogin(data);
+            console.log(res);
             if(res.status === 200){
                 navigate('/dashboard');
             }
