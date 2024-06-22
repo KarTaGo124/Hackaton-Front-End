@@ -53,7 +53,7 @@ export const fetchLogout = async () => {
 export const postItems = async (data) => {
 	try {
 		const token = localStorage.getItem("token");
-		const res = await axios.post(`${URL}items`, data, {
+		const res = await axios.post(`${URL}item`, data, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -82,7 +82,7 @@ export const fetchItems = async (limit, lastkey) => {
 export const fetchEditItem = async (data) => {
 	try {
 		const token=localStorage.getItem("token")
-		const res = await axios.put(`${URL}/items`, data, {
+		const res = await axios.put(`${URL}item`, data, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			}
@@ -110,7 +110,7 @@ export const fetchGetItemById = async (id) => {
 export const deleteProduct = async (id) => {
 	try {
 		const token=localStorage.getItem("token")
-		const res = await axios.delete(`${URL}items/${id}`, {
+		const res = await axios.delete(`${URL}item/${id}`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			}
