@@ -9,21 +9,17 @@ const Item = ({ data, onDelete }) => {
 		navigate("/edit");
 	};
 
-	return (
-		<div className="item">
-			{Object.keys(data).map((key) => (
-				<p key={key}>
-					<strong>{key}:</strong> {data[key]}
-				</p>
-			))}
-			<button className="button" onClick={handleEdit}>
-				Edit Item
-			</button>
-			<button className="button" onClick={() => onDelete(data.id)}>
-				Delete Item
-			</button>
-		</div>
-	);
-};
+  return (
+    <div>
+      {Object.keys(data).map(key => (
+        <p key={key}>
+          <strong>{key}:</strong> {data[key]}
+        </p>
+      ))}
+      <button onClick={handleEdit}>Edit Item</button>
+      <button onClick={() => onDelete(data.id)}>Delete Item</button>
+    </div>
+  );
+}
 
 export default Item;
