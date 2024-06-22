@@ -1,22 +1,20 @@
 import axios from "axios";
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 
 const URL = "https://cepnq6rjbk.execute-api.us-east-1.amazonaws.com/";
 
 export const getRoleBasedOnToken = () => {
-	const token = localStorage.getItem('token');
+	const token = localStorage.getItem("token");
 	if (!token) {
-		throw new Error('No token found');
+		throw new Error("No token found");
 	}
 	try {
 		const decodedToken = jwtDecode(token);
 		return decodedToken.role;
 	} catch (error) {
-		throw new Error('Invalid token format');
+		throw new Error("Invalid token format");
 	}
-  };
-
-
+};
 
 export const fetchLogin = async (data) => {
 	try {
@@ -37,9 +35,7 @@ export const fetchRegister = async (data) => {
 	} catch (error) {
 		return error;
 	}
-
 };
-
 
 export const fetchLogout = async () => {
 	try {
@@ -62,61 +58,78 @@ export const postItems = async (data) => {
 	} catch (error) {
 		return error;
 	}
-}
-
+};
 
 export const fetchItems = async (limit, lastkey) => {
 	try {
-		const token=localStorage.getItem("token")
-		const res = await axios.get(`${URL}/items?limit=${limit}&lastKey=${lastkey}`, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			}
-		});
+		const token = localStorage.getItem("token");
+		const res = await axios.get(
+			`${URL}/items?limit=${limit}&lastKey=${lastkey}`,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		);
 		return res;
 	} catch (error) {
 		return error;
 	}
-}
+};
 
 export const fetchEditItem = async (data) => {
 	try {
-		const token=localStorage.getItem("token")
+		const token = localStorage.getItem("token");
 		const res = await axios.put(`${URL}item`, data, {
 			headers: {
 				Authorization: `Bearer ${token}`,
-			}
+			},
 		});
 		return res;
 	} catch (error) {
 		return error;
 	}
-}
-	
+};
+
 export const fetchGetItemById = async (id) => {
 	try {
-		const token=localStorage.getItem("token")
+		const token = localStorage.getItem("token");
 		const res = await axios.get(`${URL}/item/${id}`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
-			}
+			},
 		});
 		return res;
 	} catch (error) {
+		return error;
+	}
+};
+
+export async function fetchCart(userId) {
+	try {
+		const token = localStorage.getItem("token");
+		const response = await axios.get(`${URL}cart/${userId}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		return response;
+	} catch (error) {
+		console.log(error);
 		return error;
 	}
 }
 
 export const deleteProduct = async (id) => {
 	try {
-		const token=localStorage.getItem("token")
+		const token = localStorage.getItem("token");
 		const res = await axios.delete(`${URL}item/${id}`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
-			}
+			},
 		});
 		return res;
-	}catch (error) {
-			return error;
-		}
-}
+	} catch (error) {
+		return error;
+	}
+};
