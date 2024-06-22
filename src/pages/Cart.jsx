@@ -12,15 +12,16 @@ export default function Cart() {
 		console.log(userId);
 		const cartResponse = fetchCart(userId);
 		console.log(cartResponse);
-		const itemsPromises = cartResponse.dat.items.map(async (cartItem) => {
-			const itemResponse = await fetchGetItemById(cartItem.itemId).data;
-			return {
-				...itemResponse,
-				quantity: cartItem.quantity,
-			};
-		});
-		const itemsResponses = fetchGetItemById(itemsPromises);
-		setCartItems(itemsResponses);
+		// console.log(cartResponse);
+		// const itemsPromises = cartResponse.dat.items.map(async (cartItem) => {
+		// 	const itemResponse = await fetchGetItemById(cartItem.itemId).data;
+		// 	return {
+		// 		...itemResponse,
+		// 		quantity: cartItem.qty,
+		// 	};
+		// });
+		// const itemsResponses = fetchGetItemById(itemsPromises);
+		// setCartItems(itemsResponses);
 	}, []);
 
 	return (

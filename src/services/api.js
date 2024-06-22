@@ -62,12 +62,15 @@ export const postItems = async (data) => {
 
 export const fetchItems = async (limit, lastkey) => {
 	try {
-		const token=localStorage.getItem("token")
-		const res = await axios.get(`${URL}/items?limit=${limit}&lastKey=${lastkey}`, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			}
-		});
+		const token = localStorage.getItem("token");
+		const res = await axios.get(
+			`${URL}/items?limit=${limit}&lastKey=${lastkey}`,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		);
 		return res;
 	} catch (error) {
 		return error;
@@ -76,7 +79,7 @@ export const fetchItems = async (limit, lastkey) => {
 
 export const fetchEditItem = async (data) => {
 	try {
-		const token=localStorage.getItem("token")
+		const token = localStorage.getItem("token");
 		const res = await axios.put(`${URL}item`, data, {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -90,7 +93,7 @@ export const fetchEditItem = async (data) => {
 
 export const fetchGetItemById = async (id) => {
 	try {
-		const token=localStorage.getItem("token")
+		const token = localStorage.getItem("token");
 		const res = await axios.get(`${URL}/item/${id}`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -105,7 +108,7 @@ export const fetchGetItemById = async (id) => {
 export async function fetchCart(userId) {
 	try {
 		const token = localStorage.getItem("token");
-		const response = await axios.get(`${URL}/cart/${userId}`, {
+		const response = await axios.get(`${URL}cart/${userId}`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -119,14 +122,14 @@ export async function fetchCart(userId) {
 
 export const deleteProduct = async (id) => {
 	try {
-		const token=localStorage.getItem("token")
+		const token = localStorage.getItem("token");
 		const res = await axios.delete(`${URL}item/${id}`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
-			}
+			},
 		});
 		return res;
-	}catch (error) {
-			return error;
-		}
-}
+	} catch (error) {
+		return error;
+	}
+};
