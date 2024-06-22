@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
-import { fetchRegister } from '../serivces/api';
+import { fetchRegister } from '../services/api';
 
 
 const Register = () => {
