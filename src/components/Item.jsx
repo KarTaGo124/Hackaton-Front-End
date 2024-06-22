@@ -1,14 +1,21 @@
 import React, { forwardRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { deleteProduct } from '../services/api';
 
 const Item = forwardRef(({ data, onDelete }, ref) => {
   const navigate = useNavigate();
+  const [id, setId] = useState('');
 
-  const handleEdit = () => {
-    localStorage.setItem('itemId', data.id);
-    navigate('/edit');
-  };
-
+  const handleDelete = async () => {
+    try {
+        setId(localStorage.getItem('itemId'));
+        await deleteProduct(id)
+        console.log('Deleted');
+        navigate('/dashboard');
+    } catch (error) {
+        console.log(error);
+    }
+}
   return (
     <div ref={ref}>
       {Object.keys(data).map(key => (
@@ -20,8 +27,7 @@ const Item = forwardRef(({ data, onDelete }, ref) => {
           </p>
         )
       ))}
-      <button onClick={handleEdit}>Edit Item</button>
-      <button onClick={() => onDelete(data.id)}>Delete Item</button>
+      <button onClick={()=> handleDelete}>Delete Item</button>
     </div>
   );
 });

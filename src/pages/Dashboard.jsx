@@ -5,7 +5,6 @@ import { deleteProduct, fetchItems, getRoleBasedOnToken } from '../services/api'
 
 const Dashboard = () => {
   const [items, setItems] = useState([]);
-  const [render, setRender] = useState(false);
   const [role, setRole] = useState('');
   const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -56,7 +55,7 @@ const Dashboard = () => {
     };
 
     fetchData();
-  }, [render]);
+  }, []);
 
   const lastItemElementRef = useCallback(node => {
     if (isLoading) return;
@@ -80,31 +79,16 @@ const Dashboard = () => {
       <div>
         <button onClick={handleLogout}>Logout</button>
       </div>
-      {role === 'Admin' && (
+      <button onClick={() => navigate('/edit')}>Edite Item</button>
+      {role === 'admin' && (
         <button onClick={() => navigate('/create')}>Create Item</button>
       )}
       <div>
-        {items.map((item, index) => {
-          if (items.length === index + 1) {
-            return (
-              <Item 
-                ref={lastItemElementRef} 
-                key={item.id} 
-                data={item} 
-                onDelete={handleDelete} 
-              />
-            );
-          } else {
-            return (
-              <Item 
-                key={item.id} 
-                data={item} 
-                onDelete={handleDelete} 
-              />
-            );
-          }
-        })}
-        {isLoading && <p>Loading...</p>}
+        {items.map((item) => (
+          <Item key={item.ansi} 
+          data={item} >
+          </Item> 
+        ))}
       </div>
     </>
   );

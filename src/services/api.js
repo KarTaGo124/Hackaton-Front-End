@@ -82,7 +82,7 @@ export const fetchItems = async (limit, lastkey) => {
 export const fetchEditItem = async (data) => {
 	try {
 		const token=localStorage.getItem("token")
-		const res = await axios.put(`${URL}/items`, data, {
+		const res = await axios.put(`${URL}item`, data, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			}

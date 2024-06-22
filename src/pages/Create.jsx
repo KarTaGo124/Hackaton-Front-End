@@ -37,9 +37,14 @@ const Create = () => {
     const handleCreate = async () => {
         try {
             const res = await postItems(newItem);
+<<<<<<< HEAD
 
             console.log('Item created:', res);
 
+=======
+            console.log('Item created:', res.data);
+            navigate('/dashboard');
+>>>>>>> Main
         } catch (error) {
             console.error('Error creating item:', error);
         }
