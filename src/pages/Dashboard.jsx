@@ -5,32 +5,31 @@ import { fetchItems, getRoleBasedOnToken } from '../services/api';
 import { deleteProduct } from '../services/api';
 
 const Dashboard = () => {
-  const [items, setItems] = useState([]);
-  const [role, setRole] = useState('');
-  const navigate = useNavigate();
-  
-  const handleLogout = async () => {
-    try {
-      console.log('Logged out');
-      navigate('/auth/login');
-    } catch (error) {
-      console.log(error);
-    }
-  };
+	const [items, setItems] = useState([]);
+	const [role, setRole] = useState("");
+	const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetchItems(10, null);
-        setItems(response.data.items);
-        console.log(response);
+	const handleLogout = async () => {
+		try {
+			console.log("Logged out");
+			navigate("/auth/login");
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
-        const userRole = getRoleBasedOnToken();
-        setRole(userRole);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const response = await fetchItems(10, null);
+				setItems(response.data.items);
+				console.log(response);
+				const userRole = getRoleBasedOnToken();
+				setRole(userRole);
+			} catch (error) {
+				console.log(error.message);
+			}
+		};
 
     fetchData();
   }, []);
