@@ -1,7 +1,7 @@
 import axios from "axios";
 import { jwtDecode } from 'jwt-decode';
 
-const URL = "https://cepnq6rjbk.execute-api.us-east-1.amazonaws.com/";
+const URL = "https://cepnq6rjbk.execute-api.us-east-1.amazonaws.com";
 
 export const getRoleBasedOnToken = () => {
 	const token = localStorage.getItem('token');
@@ -20,7 +20,7 @@ export const getRoleBasedOnToken = () => {
 
 export const fetchLogin = async (data) => {
 	try {
-		const res = await axios.post(`${URL}auth/login`, data);
+		const res = await axios.post(`${URL}/auth/login`, data);
 		if (res.status === 200) {
 			localStorage.setItem("token", res.data.token);
 		}
@@ -32,7 +32,7 @@ export const fetchLogin = async (data) => {
 
 export const fetchRegister = async (data) => {
 	try {
-		const res = await axios.post(`${URL}auth/register`, data);
+		const res = await axios.post(`${URL}/auth/register`, data);
 		return res;
 	} catch (error) {
 		return error;
@@ -110,7 +110,7 @@ export const fetchGetItemById = async (id) => {
 export const deleteProduct = async (id) => {
 	try {
 		const token=localStorage.getItem("token")
-		const res = await axios.delete(`${URL}items/${id}`, {
+		const res = await axios.delete(`${URL}/items/${id}`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			}
