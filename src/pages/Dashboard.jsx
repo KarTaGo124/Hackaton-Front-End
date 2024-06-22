@@ -64,6 +64,11 @@ const Dashboard = () => {
       if (observer.current) observer.current.disconnect();
     };
   }, []);
+  const handleDelete = async (id) => {
+    await deleteProduct(id);
+    console.log('Item deleted');
+    navigate('/dashboard')
+}
 
   return (
     <>
@@ -95,6 +100,7 @@ const Dashboard = () => {
         })}
         {isLoading && <p>Loading...</p>}
       </div>
+      <button onClick={() => handleDelete(item.asin)}>Delete Item</button>
     </>
   );
 };
