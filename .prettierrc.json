@@ -1,0 +1,19 @@
+{
+    "tabWidth": 2,
+    "singleQuote": false,
+    "useTabs": true,
+    "overrides": [
+        {
+            "files": [
+                "*/json"
+            ],
+            "options": {
+                "tabWidth": 4,
+                "useTabs": false
+            }
+        }
+    ],
+    "plugins": [
+        "prettier-plugin-tailwindcss"
+    ]
+}
