@@ -1,28 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Item from '../components/Item';
 import { useNavigate } from 'react-router-dom';
-import { deleteProduct } from '../services/api';
-import { fetchItems, getRoleBasedOnToken } from '../services/api';
+import { deleteProduct, fetchItems, getRoleBasedOnToken } from '../services/api';
 
 const Dashboard = () => {
   const [items, setItems] = useState([]);
   const [render, setRender] = useState(false);
   const [role, setRole] = useState('');
+  const [page, setPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
+  const observer = useRef();
 
   const handleDelete = async (id) => {
     try {
-        await deleteProduct(id)
-        setRender(render+1);
+      await deleteProduct(id);
+      setRender(prev => !prev);
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-}
-const handleEdit = async(id) => {
-  localStorage.setItem('itemId', id)
-  navigate('/edit')
-}
+  };
+
   const handleLogout = async () => {
     try {
       console.log('Logged out');
@@ -32,13 +30,24 @@ const handleEdit = async(id) => {
     }
   };
 
+  const fetchMoreItems = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    try {
+      const response = await fetchItems(10, page);
+      setItems(prevItems => [...prevItems, ...response.data.items]);
+      setPage(prevPage => prevPage + 1);
+    } catch (error) {
+      console.log(error.message);
+    }
+    setIsLoading(false);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetchItems(10, null);
+        const response = await fetchItems(10, 0);
         setItems(response.data.items);
-        console.log(response);
-
         const userRole = getRoleBasedOnToken();
         setRole(userRole);
       } catch (error) {
@@ -49,6 +58,23 @@ const handleEdit = async(id) => {
     fetchData();
   }, [render]);
 
+  const lastItemElementRef = useCallback(node => {
+    if (isLoading) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        fetchMoreItems();
+      }
+    });
+    if (node) observer.current.observe(node);
+  }, [isLoading]);
+
+  useEffect(() => {
+    return () => {
+      if (observer.current) observer.current.disconnect();
+    };
+  }, []);
+
   return (
     <>
       <div>
@@ -58,16 +84,30 @@ const handleEdit = async(id) => {
         <button onClick={() => navigate('/create')}>Create Item</button>
       )}
       <div>
-        {items.map((item) => (
-          <Item key={item.ansi} 
-          data={item} >
-          <button className="button" onClick={() => handleDelete(item.ansi)}>Borrar Producto</button>
-          <button className="button" onClick={() => handleEdit(item.ansi)}>Editar Producto</button>
-          </Item> 
-        ))}
+        {items.map((item, index) => {
+          if (items.length === index + 1) {
+            return (
+              <Item 
+                ref={lastItemElementRef} 
+                key={item.id} 
+                data={item} 
+                onDelete={handleDelete} 
+              />
+            );
+          } else {
+            return (
+              <Item 
+                key={item.id} 
+                data={item} 
+                onDelete={handleDelete} 
+              />
+            );
+          }
+        })}
+        {isLoading && <p>Loading...</p>}
       </div>
     </>
   );
-}
+};
 
 export default Dashboard;
