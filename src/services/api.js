@@ -94,7 +94,7 @@ export const fetchEditItem = async (data) => {
 export const fetchGetItemById = async (id) => {
 	try {
 		const token = localStorage.getItem("token");
-		const res = await axios.get(`${URL}/item/${id}`, {
+		const res = await axios.get(`${URL}item/${id}`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -134,18 +134,54 @@ export const deleteProduct = async (id) => {
 	}
 };
 
-
 export const addItemToCart = async (itemId, userId) => {
 	try {
 		const token = localStorage.getItem("token");
-		const res = await axios.post(`${URL}cart`, {
-			itemId,
-			userId
-		}, {
+		const res = await axios.put(
+			`${URL}cart`,
+			{
+				itemId,
+				userId,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		);
+		return res;
+	} catch (error) {
+		return error;
+	}
+};
+
+export const deleteCartItem = async (data) => {
+	try {
+		const token = localStorage.getItem("token");
+		const res = await axios.delete(`${URL}cart`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
+			data: data,
 		});
+		return res;
+	} catch (error) {
+		return error;
+	}
+};
+
+export const buyCart = async (userId) => {
+	try {
+		const token = localStorage.getItem("token");
+		const res = await axios.post(
+			`${URL}buy`,
+			{ userId },
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		);
 		return res;
 	} catch (error) {
 		return error;

@@ -1,34 +1,59 @@
 import { useEffect, useState } from "react";
 import CartItem from "../components/CartItem";
-import { fetchCart, fetchGetItemById } from "../services/api";
+import { buyCart, fetchCart, fetchGetItemById } from "../services/api";
 import { jwtDecode } from "jwt-decode";
 
-export default function Cart() {
+export default function Cart({ setIsOpen }) {
 	const [cartItems, setCartItems] = useState([]);
 
 	useEffect(() => {
-		const decodedToken = jwtDecode(localStorage.getItem("token"));
-		const userId = decodedToken.username;
-		console.log(userId);
-		const cartResponse = fetchCart(userId);
-		console.log(cartResponse);
-		// console.log(cartResponse);
-		// const itemsPromises = cartResponse.dat.items.map(async (cartItem) => {
-		// 	const itemResponse = await fetchGetItemById(cartItem.itemId).data;
-		// 	return {
-		// 		...itemResponse,
-		// 		quantity: cartItem.qty,
-		// 	};
-		// });
-		// const itemsResponses = fetchGetItemById(itemsPromises);
-		// setCartItems(itemsResponses);
+		async function fetch() {
+			const decodedToken = jwtDecode(localStorage.getItem("token"));
+			const userId = decodedToken.username;
+			const cartResponse = await fetchCart(userId);
+			const itemsPromises = cartResponse.data.products.map(async (cartItem) => {
+				const itemResponse = await fetchGetItemById(cartItem.item_id);
+				return {
+					...itemResponse.data,
+					quantity: cartItem.qty,
+				};
+			});
+			const items = await Promise.all(itemsPromises);
+			console.log(items);
+			setCartItems(items);
+		}
+
+		fetch();
 	}, []);
 
+	const handlePurchase = async () => {
+		const decodedToken = jwtDecode(localStorage.getItem("token"));
+		const userId = decodedToken.username;
+		await buyCart(userId);
+		setCartItems([]);
+		setIsOpen(false);
+		alert("Gracias por comprar!");
+	};
+
 	return (
-		<div className="flex h-80 w-80 flex-col rounded-lg bg-white">
-			{cartItems.map((key, cartItem) => (
-				<CartItem key={key} id={cartItem.itemId} quantity={cartItem.quantity} />
-			))}
+		<div className="flex h-full w-full flex-col rounded-lg bg-white">
+			{cartItems.map((cartItem) => {
+				console.log(cartItem);
+				return (
+					<CartItem
+						key={cartItem.asin}
+						id={cartItem.asin}
+						title={cartItem.title}
+						stars={cartItem.stars}
+						imageUrl={cartItem.imgUrl}
+						quantity={cartItem.quantity}
+						price={cartItem.price}
+						isBestSeller={cartItem.isBestSeller}
+					/>
+				);
+			})}
+
+			<button onClick={handlePurchase}>Comprar</button>
 		</div>
 	);
 }

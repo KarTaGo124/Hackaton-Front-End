@@ -19,8 +19,8 @@ const Item = ({ data }) => {
 
 	const handlePurchase = async () => {
 		try {
-      const decodedToken = jwtDecode(localStorage.getItem("token"));
-      const userId = decodedToken.username;
+			const decodedToken = jwtDecode(localStorage.getItem("token"));
+			const userId = decodedToken.username;
 			const response = await addItemToCart(data.asin, userId);
 			console.log(response.message);
 		} catch (error) {

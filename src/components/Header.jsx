@@ -15,7 +15,7 @@ export default function Header() {
 				onClose={() => setIsOpen(false)}
 				className="flex flex-col items-center justify-center"
 			>
-				<Cart />
+				<Cart setIsOpen={setIsOpen} />
 			</Modal>
 		</div>
 	);
