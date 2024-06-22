@@ -16,7 +16,7 @@ const Create = () => {
     useEffect(() => {
         try {
             const role = getRoleBasedOnToken();
-            if (role !== 'Admin') {
+            if (role !== 'admin') {
                 alert('Access denied. Only admins can create items.');
                 navigate('/dashboard');
             }
@@ -37,7 +37,7 @@ const Create = () => {
     const handleCreate = async () => {
         try {
             const res = await postItems(newItem);
-            console.log('Item created:', res);
+            console.log('Item created:', res.data);
             navigate('/dashboard');
         } catch (error) {
             console.error('Error creating item:', error);

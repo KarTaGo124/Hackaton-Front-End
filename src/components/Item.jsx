@@ -1,13 +1,21 @@
-import { useNavigate } from "react-router-dom";
+import {useState} from 'react';
+import { useNavigate } from 'react-router-dom';
+import { deleteProduct } from '../services/api';
 
-const Item = ({ data, onDelete }) => {
-	const navigate = useNavigate();
+const Item = ({data}) => {
+  const navigate = useNavigate();
+  const [id, setId] = useState('');
 
-	const handleEdit = () => {
-		localStorage.setItem("itemId", data.id);
-		navigate("/edit");
-	};
-
+  const handleDelete = async () => {
+    try {
+        setId(localStorage.getItem('itemId'));
+        await deleteProduct(id)
+        console.log('Deleted');
+        navigate('/dashboard');
+    } catch (error) {
+        console.log(error);
+    }
+}
   return (
     <div>
       {Object.keys(data).map(key => (
@@ -15,8 +23,7 @@ const Item = ({ data, onDelete }) => {
           <strong>{key}:</strong> {data[key]}
         </p>
       ))}
-      <button onClick={handleEdit}>Edit Item</button>
-      <button onClick={() => onDelete(data.id)}>Delete Item</button>
+      <button onClick={()=> handleDelete}>Delete Item</button>
     </div>
   );
 }
