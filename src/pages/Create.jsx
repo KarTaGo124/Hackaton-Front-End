@@ -16,7 +16,7 @@ const Create = () => {
     useEffect(() => {
         try {
             const role = getRoleBasedOnToken();
-            if (role !== 'Admin') {
+            if (role !== 'admin') {
                 alert('Access denied. Only admins can create items.');
                 navigate('/dashboard');
             }
