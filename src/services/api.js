@@ -60,7 +60,7 @@ export const postItems = async (data) => {
 		});
 		return res;
 	} catch (error) {
-		return error;
+		return error;
 	}
 }
 
