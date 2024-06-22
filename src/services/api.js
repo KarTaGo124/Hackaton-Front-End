@@ -133,3 +133,21 @@ export const deleteProduct = async (id) => {
 		return error;
 	}
 };
+
+
+export const addItemToCart = async (itemId, userId) => {
+	try {
+		const token = localStorage.getItem("token");
+		const res = await axios.post(`${URL}cart`, {
+			itemId,
+			userId
+		}, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		return res;
+	} catch (error) {
+		return error;
+	}
+};
