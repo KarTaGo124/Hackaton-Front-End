@@ -53,7 +53,7 @@ export const fetchLogout = async () => {
 export const postItems = async (data) => {
 	try {
 		const token = localStorage.getItem("token");
-		const res = await axios.post(`${URL}/items`, data, {
+		const res = await axios.post(`${URL}/item`, data, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},

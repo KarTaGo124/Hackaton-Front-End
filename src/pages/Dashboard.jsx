@@ -45,7 +45,7 @@ const Dashboard = () => {
       <div>
         <button onClick={handleLogout}>Logout</button>
       </div>
-      {role === 'admin' && (
+      {role === 'Admin' && (
         <button onClick={() => navigate('/create')}>Create Item</button>
       )}
       <div>
