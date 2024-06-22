@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "http://localhost:8080";
+const URL = "https://cepnq6rjbk.execute-api.us-east-1.amazonaws.com/";
 
 export const fetchLogin = async (data) => {
 	try {
@@ -34,3 +34,45 @@ export const fetchLogout = async () => {
 		return error;
 	}
 };
+
+export const fetchItems = async (limit, lastkey) => {
+	try {
+		const token=localStorage.getItem("token")
+		const res = await axios.get(`${URL}items?limit=${limit}&lastKey=${lastkey}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			}
+		});
+		return res;
+	} catch (error) {
+		return error;
+	}
+}
+
+export const fetchEditItem = async (data) => {
+	try {
+		const token=localStorage.getItem("token")
+		const res = await axios.put(`${URL}items`, data, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			}
+		});
+		return res;
+	} catch (error) {
+		return error;
+	}
+}
+	
+export const fetchGetItemById = async (id) => {
+	try {
+		const token=localStorage.getItem("token")
+		const res = await axios.get(`${URL}item/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			}
+		});
+		return res;
+	} catch (error) {
+		return error;
+	}
+}
