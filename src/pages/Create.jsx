@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { postItems } from '../services/api';
+import { postItems, getRoleBasedOnToken } from '../services/api';
 
 const Create = () => {
     const [newItem, setNewItem] = useState({
@@ -12,6 +12,19 @@ const Create = () => {
         title: ''
     });
     const navigate = useNavigate();
+
+    useEffect(() => {
+        try {
+            const role = getRoleBasedOnToken();
+            if (role !== 'admin') {
+                alert('Access denied. Only admins can create items.');
+                navigate('/dashboard');
+            }
+        } catch (error) {
+            console.error(error.message);
+            navigate('/auth/login');
+        }
+    }, [navigate]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;

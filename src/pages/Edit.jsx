@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchEditItem } from '../services/api';
+import { fetchGetItemById } from '../services/api';
 
 const Edit = () => {
   const navigate = useNavigate();
   const [item, setItem] = useState({
+    itemId: '',
     boughtLastMonth: 0,
     imgUrl: '',
     isBestSeller: false,
@@ -15,20 +17,17 @@ const Edit = () => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    const fetchData = async () => {
+    const getItem = async () => {
       try {
-        const itemId = localStorage.getItem('itemId');
-        console.log(itemId)
-
-
+        const data = await fetchGetItemById(localStorage.getItem('itemId'));
+        console.log(data);
+        setItem(data);
       } catch (error) {
-        console.error('Error fetching data:', error);
-        navigate('/auth/login');
+        console.log(error)
       }
     };
-
-    fetchData();
-  }, [navigate]);
+    getItem();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -52,10 +51,23 @@ const Edit = () => {
 
   return (
     <main>
+                  <button className="button" onClick={() => navigate('/dashboard')}>Back to Dashboard</button>
       <div>
         <article>
           <h1>Edit Item</h1>
           <form onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="itemId">ItemId</label>
+              <input
+                type="text"
+                name="itemId"
+                id="itemId"
+
+                onChange={handleChange}
+                required
+              />
+              {errors.itemId && <p>{errors.itemId}</p>}
+            </div>
             <div>
               <label htmlFor="title">Title</label>
               <input
