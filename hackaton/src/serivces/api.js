@@ -26,3 +26,12 @@ export const fetchRegister = async (data) => {
         return error;
     }
 }
+
+export const fetchLogout = async () => {
+    try {
+        localStorage.removeItem('token');
+        return {status: 200};
+    } catch (error) {
+        return error;
+    }
+}
