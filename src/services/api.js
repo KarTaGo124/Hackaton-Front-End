@@ -17,6 +17,7 @@ export const getRoleBasedOnToken = () => {
   };
 
 
+
 export const fetchLogin = async (data) => {
 	try {
 		const res = await axios.post(`${URL}/auth/login`, data);
@@ -56,6 +57,49 @@ export const postItems = async (data) => {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
+		});
+		return res;
+	} catch (error) {
+		return error;
+	}
+}
+
+
+export const fetchItems = async (limit, lastkey) => {
+	try {
+		const token=localStorage.getItem("token")
+		const res = await axios.get(`${URL}items?limit=${limit}&lastKey=${lastkey}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			}
+		});
+		return res;
+	} catch (error) {
+		return error;
+	}
+}
+
+export const fetchEditItem = async (data) => {
+	try {
+		const token=localStorage.getItem("token")
+		const res = await axios.put(`${URL}items`, data, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			}
+		});
+		return res;
+	} catch (error) {
+		return error;
+	}
+}
+	
+export const fetchGetItemById = async (id) => {
+	try {
+		const token=localStorage.getItem("token")
+		const res = await axios.get(`${URL}item/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			}
 		});
 		return res;
 	} catch (error) {
