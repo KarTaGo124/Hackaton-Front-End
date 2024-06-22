@@ -9,6 +9,7 @@ export default function CartItem({
 	isBestSeller,
 	imageUrl,
 	id,
+	quantity,
 }) {
 	return (
 		<Card>
