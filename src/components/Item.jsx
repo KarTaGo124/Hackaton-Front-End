@@ -10,14 +10,14 @@ const Item = ({ data, onDelete }) => {
   };
 
   return (
-    <div className="item">
+    <div>
       {Object.keys(data).map(key => (
         <p key={key}>
           <strong>{key}:</strong> {data[key]}
         </p>
       ))}
-      <button className="button" onClick={handleEdit}>Edit Item</button>
-      <button className="button" onClick={() => onDelete(data.id)}>Delete Item</button>
+      <button onClick={handleEdit}>Edit Item</button>
+      <button onClick={() => onDelete(data.id)}>Delete Item</button>
     </div>
   );
 }
